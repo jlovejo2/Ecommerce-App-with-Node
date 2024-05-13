@@ -4,4 +4,4 @@
 - they are set up in products.json file
 
 
-// Stopped at controlling our Api with query parameters 5-10-2024
+// Stopped at Next() and Middleware in chapter 3 5-13-2024
