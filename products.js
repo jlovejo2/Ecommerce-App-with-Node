@@ -13,8 +13,10 @@ module.exports = {
 }
 
 async function list(opts = {}) {
-    const { offset, limit } = opts;
+    const { offset, limit, tag } = opts;
 
     const data = await fs.readFile(productsFile);
-    return JSON.parse(data).slice(offset, offset + limit);  
+    return JSON.parse(data)
+        .filter((p, i) => !tag || p.tags.indexOf(tag) >= 0)
+        .slice(offset, offset + limit);  
 };

@@ -11,13 +11,14 @@ async function listProducts(req, res) {
 
     //this tells the browser that our server will accept data no matter which origin the html is loaded from.
     res.setHeader('Access-Control-Allow-Origin', '*');
-    const { offset = 0, limit = 25 } = req.query;
+    const { offset = 0, limit = 25, tag } = req.query;
     
     try {
         res.json(await Products.list({
             // this is an example of coercing the the variables into numbers
             offset: Number(offset),
-            limit: Number(limit)
+            limit: Number(limit),
+            tag
         }));
     } catch (err) {
         res.status(500).json({ error: err.message })
