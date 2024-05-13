@@ -12,7 +12,9 @@ module.exports = {
     list
 }
 
-async function list() {
+async function list(opts = {}) {
+    const { offset, limit } = opts;
+
     const data = await fs.readFile(productsFile);
-    return JSON.parse(data);  
+    return JSON.parse(data).slice(offset, offset + limit);  
 };
