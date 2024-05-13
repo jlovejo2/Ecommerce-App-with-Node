@@ -21,9 +21,9 @@ function handleError(err, req, res, next) {
     console.error(err);
     // the best practice is to only respond if res.headersSent is false within a custom error handler.
     if (res.headersSent) return next(err);
-    res.status(500).json({ error: 'Internal Error'})
+    res.status(500).json({ error: 'Internal Error' })
 }
 
 function notFound (req, res) {
-    res.status(404).json({ error: 'Not Found'})
+    res.status(404).json({ error: 'Not Found' })
 }
