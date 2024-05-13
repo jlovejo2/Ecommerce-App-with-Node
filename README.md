@@ -4,4 +4,4 @@
 - they are set up in products.json file
 
 
-// Stopped at Next() and Middleware in chapter 3 5-13-2024
+// HTTP POST, PUT, and DELETE in chapter 3 5-13-2024
