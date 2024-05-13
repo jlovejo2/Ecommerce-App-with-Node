@@ -9,7 +9,8 @@ const path = require('path')
 const productsFile = path.join(__dirname, './products.json');
 
 module.exports = {
-    list
+    list,
+    getById
 }
 
 async function list(opts = {}) {
@@ -20,3 +21,12 @@ async function list(opts = {}) {
         .filter((p, i) => !tag || p.tags.indexOf(tag) >= 0)
         .slice(offset, offset + limit);  
 };
+
+async function getById(id) {
+    const products = JSON.parse(await fs.readFile(productsFile));
+
+    for (let i = 0; i < products.length; i++) {
+        if (products[i]._id === id) return products[i];
+    }
+    return null;
+}

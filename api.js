@@ -4,7 +4,8 @@ const Products = require('./products')
 // main purpose of api is to convert data from the express request object into the appropriate format for use with our data models
 
 module.exports = {
-    listProducts
+    listProducts,
+    getProductById
 }
 
 async function listProducts(req, res) {
@@ -22,5 +23,23 @@ async function listProducts(req, res) {
         }));
     } catch (err) {
         res.status(500).json({ error: err.message })
+    }
+}
+
+async function getProductById(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    const { id } = req.params;
+
+    try {
+        const product = await Products.getById(id);
+        // next() is a callback provided by express that indicates the next available handler should run
+        if (!product){
+            console.log('no product found by id')
+            return next()
+        };
+
+        res.json(product);
+    } catch (err) {
+        res.status(500).json({error: err.message})
     }
 }
