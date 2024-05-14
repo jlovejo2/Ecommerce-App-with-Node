@@ -6,7 +6,10 @@ const Products = require('./products')
 
 module.exports = autoCatch({
     listProducts,
-    getProductById
+    getProductById,
+    createProduct,
+    editProduct,
+    deleteProduct
 });
 
 async function listProducts(req, res) {
@@ -31,4 +34,19 @@ async function getProductById(req, res, next) {
     if (!product) return next();
 
     res.json(product);
+}
+
+async function createProduct( req, res, next) {
+    console.log('create Product: ', req.body);
+    res.json(req.body)
+}
+
+async function editProduct(req, res, next) {
+    console.log('edit Product: ', req.body);
+    res.json(req.body)
+}
+
+async function deleteProduct(req, res , next) {
+    console.log('delete Product: ', req.body);
+    res.json({ success: true})
 }
