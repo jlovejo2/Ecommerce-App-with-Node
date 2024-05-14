@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const api = require('./api');
 const middleware = require('./middleware');
 
-
 // purpose of server module
 // connects external URL endpoints to internal route handler functions
 // creates web server object, sets up middleware, and connects routes to route handler functions 
