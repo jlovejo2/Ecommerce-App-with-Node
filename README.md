@@ -4,4 +4,4 @@
 - they are set up in products.json file
 
 
-// HTTP POST, PUT, and DELETE in chapter 3 5-13-2024
+// CReating Products chapter 4 5-14-2024 - already installed MongoDB locally

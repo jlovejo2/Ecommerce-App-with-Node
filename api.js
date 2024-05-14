@@ -38,7 +38,8 @@ async function getProductById(req, res, next) {
 
 async function createProduct( req, res, next) {
     console.log('create Product: ', req.body);
-    res.json(req.body)
+    const product = await Products.create(req.body);
+    res.json(product)
 }
 
 async function editProduct(req, res, next) {
