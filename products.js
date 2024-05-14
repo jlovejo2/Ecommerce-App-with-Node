@@ -25,24 +25,31 @@ const Product = db.model('Product', {
 const productsFile = path.join(__dirname, './products.json');
 
 module.exports = {
+    create,
     list,
     getById
 }
 
-async function list(opts = {}) {
-    const { offset, limit, tag } = opts;
+async function create (fields) {
+    // first create product in memory and then save() persists it to database
+    const product = await new Product(fields).save()
+    return product
+}
 
-    const data = JSON.parse(await fs.readFile(productsFile));
-    return data
-        .filter((p, i) => !tag || p.tags.indexOf(tag) >= 0)
-        .slice(offset, offset + limit);  
+async function list(opts = {}) {
+    const { offset = 0, limit = 25, tag } = opts;
+
+    const query = tag ? {tags : tag} : {}
+    // currently will return products in order they were created because of sort on _id
+    const products = await Product.find(query)
+        .sort({ _id: 1 })
+        .skip(offset)
+        .limit(limit)
+    
+    return products;
 };
 
-async function getById(id) {
-    const products = JSON.parse(await fs.readFile(productsFile));
-
-    for (let i = 0; i < products.length; i++) {
-        if (products[i]._id === id) return products[i];
-    }
-    return null;
+async function getById(_id) {
+    const product = await Product.findById(_id);
+    return product;
 }
