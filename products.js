@@ -2,6 +2,8 @@ const fs = require('fs').promises
 const path = require('path')
 const cuid = require ('cuid');
 const db = require('./db');
+const { urlSchema } = require('./lib/schema-helpers');
+
 // this is a model module
 // this is on the inside of our api
 // and is only responsible for getting and storing data (in this case locally)
@@ -10,19 +12,18 @@ const db = require('./db');
 
 // By default, mongoose will prevent us from persisting any properties absent from the schema object.
 // default can also be useful in other cases such as automatically providing a timestamp (e.g. { timestamp: { type: Number, default: Date.now } })
+// required property create validation in mongoose that makes that field required when editing or creating an object with the model
 const Product = db.model('Product', {
     _id: { type: String, default: cuid },
-    description: String,
-    imgThumb: String,
-    img: String,
-    link: String,
-    userId: String,
-    userName: String,
-    userLink: String,
+    description: { type: String, required: true },
+    imgThumb: urlSchema({ type: String, required: true }),
+    img: urlSchema({ required: true }),
+    link: urlSchema(),
+    userId: { type: String, required: true },
+    userName: { type: String, required: true },
+    userLink: urlSchema(),
     tags: { type: [String], index: true}
 })
-
-const productsFile = path.join(__dirname, './products.json');
 
 module.exports = {
     create,
