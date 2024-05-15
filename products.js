@@ -26,15 +26,13 @@ const productsFile = path.join(__dirname, './products.json');
 
 module.exports = {
     create,
+    edit,
+    getById,
     list,
-    getById
+    remove,
 }
 
-async function create (fields) {
-    // first create product in memory and then save() persists it to database
-    const product = await new Product(fields).save()
-    return product
-}
+// queries
 
 async function list(opts = {}) {
     const { offset = 0, limit = 25, tag } = opts;
@@ -51,5 +49,30 @@ async function list(opts = {}) {
 
 async function getById(_id) {
     const product = await Product.findById(_id);
+    return product;
+}
+
+// manipulate database
+
+async function create (fields) {
+    // first create product in memory and then save() persists it to database
+    const product = await new Product(fields).save();
+    return product;
+}
+
+async function remove(_id) {
+    await Product.deleteOne({_id});
+}
+
+
+// could use findByIdAndUpdate() to acheive this without the getById() call
+// however it limits the use of hooks and validation so it isn't recommended with mongoose
+async function edit(_id, change) {
+    const product = await getById(_id);
+    Object.keys(change).forEach(function (key) {
+        product[key] = change[key];
+    })
+
+    await product.save();
     return product;
 }

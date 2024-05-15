@@ -43,11 +43,13 @@ async function createProduct( req, res, next) {
 }
 
 async function editProduct(req, res, next) {
-    console.log('edit Product: ', req.body);
-    res.json(req.body)
+    console.log('edit Product: ', req.body)
+    const product = await Products.edit(req.params.id, req.body);
+    res.json(product)
 }
 
 async function deleteProduct(req, res , next) {
     console.log('delete Product: ', req.body);
+    await Products.remove(req.params.id)
     res.json({ success: true})
 }
