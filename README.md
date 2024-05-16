@@ -5,3 +5,5 @@
 
 
 // chapter 4 Date For Development and Testing 5-15-2024 - already installed MongoDB locally
+
+// image upload is not implemented at end of book may try to implement it via amazon in dev environment
