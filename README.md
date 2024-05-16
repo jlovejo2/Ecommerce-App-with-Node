@@ -4,4 +4,4 @@
 - they are set up in products.json file
 
 
-// CReating Products chapter 4 5-14-2024 - already installed MongoDB locally
+// chapter 4 Date For Development and Testing 5-15-2024 - already installed MongoDB locally

@@ -17,3 +17,6 @@
 
 - To find a collection
 `db.getCollection('products').find().pretty()`
+
+- clear out databse
+`db.dropDatabase()`
