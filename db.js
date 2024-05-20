@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 // and useFindandModify is false
 
 mongoose.connect(
-    process.nextTick.MONGO_URI || 'mongodb://localHost:27017/ecommerce-app',
+    process.env.MONGO_URI || 'mongodb://localHost:27017/ecommerce-app',
     // these two parameters are not required but will help prevent deprecation warnings when using current versions
 )
 

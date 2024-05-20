@@ -83,6 +83,38 @@ async function listProducts(req, res) {
 }
 
 
+// IMAGEs 
+// this is an example function that is not implemented yet
+// End of chapter 4 explains design decisions around image uploads
+
+// this is an example of using a CDN like amazon s3 to store the image files and then deliver the url to our front -end
+// things can be made even more optimied if we have a separate CDN server that sits between user and s3.  When the cdn url is accessed the cdn will return the file if it has it available
+// if not will grab it from the object storage server first (then store a copy locally for next time)
+
+async function setProductImage (req, res) {
+    const productId = req.params.id
+  
+    const ext = {
+      'image/png': 'png',
+      'image/jpeg': 'jpg'
+    }[req.headers['content-type']]
+  
+    if (!ext) throw new Error('Invalid Image Type')
+  
+    const params = {
+      Bucket: 'fullstack-printshop',
+      Key: `product-images/${productId}.${ext}`,
+      Body: req, // req is a stream, similar to fs.createReadStream()
+      ACL: 'public-read'
+    }
+  
+    const object = await s3.uploadP(params) // our custom promise version
+  
+    const change = { img: object.Location }
+    const product = await Products.edit(productId, change)
+  
+    res.json(product)
+  }
 
 
 
