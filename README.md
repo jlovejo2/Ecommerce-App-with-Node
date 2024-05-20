@@ -4,6 +4,6 @@
 - they are set up in products.json file
 
 
-// chapter 5 just implemented serializeUser and deserializeUser 5-16-24  
+// chapter 5 start at SEssion Sharing and PErsistence with JWTS 5-20-24  
 
 // image upload is not implemented at end of book may try to implement it via amazon in dev environment
