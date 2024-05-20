@@ -1,3 +1,5 @@
+const { STATUS_CODES } = require('http')
+
 module.exports = {
     cors,
     handleError,
@@ -21,7 +23,9 @@ function handleError(err, req, res, next) {
     console.error(err);
     // the best practice is to only respond if res.headersSent is false within a custom error handler.
     if (res.headersSent) return next(err);
-    res.status(500).json({ error: 'Internal Error' })
+    const statusCode = err.statusCode || 500
+    const errorMessage = STATUS_CODES[statusCode] || 'Internal Error'
+    res.status(500).json({ error: errorMessage })
 }
 
 function notFound (req, res) {
