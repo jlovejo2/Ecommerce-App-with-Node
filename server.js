@@ -20,8 +20,6 @@ app.use(middleware.cors)
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-auth.setMiddleware(app);
-
 // responds success only if the middleware passport.authenticate is successful
 app.post('/login', auth.authenticate, auth.login)
 
