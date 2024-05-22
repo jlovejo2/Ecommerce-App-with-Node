@@ -4,6 +4,6 @@
 - they are set up in products.json file
 
 
-// chapter 5 start at Adding USers 5-21-24  
+// chapter 5 start at User Authorization 5-22-24  
 
 // image upload is not implemented at end of book may try to implement it via amazon in dev environment

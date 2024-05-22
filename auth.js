@@ -1,7 +1,10 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 const Strategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
 const autocatch = require('./lib/auto-catch');
+const Users = require('./models/users');
+
 
 // article that discusses the concept of a complex secret in production
 // https://martinfowler.com/articles/session-secret.html
@@ -55,9 +58,20 @@ async function ensureAdmin(req, res ,next) {
 }
 
 function adminStrategy() {
-    return new Strategy(function (username, password, cb) {
+    return new Strategy(async function (username, password, cb) {
         const isAdmin = ( username === 'admin') && (password === adminPassword)
         if (isAdmin) cb(null, { username: 'admin'})
-        else cb(null, false)
+
+        try {
+            const user = await Users.get(username);
+            if (!user) return cb(null, false);
+
+            const isUser = await bcrypt.compare(password, user.password);
+            if (isUser) return cb(null, { username: user.username})
+        } catch(err) { 
+            console.log(err)
+        }
+        
+        cb(null, false)
     })
 }
