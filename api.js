@@ -1,6 +1,7 @@
 const autoCatch = require('./lib/auto-catch');
 const Products = require('./models/products')
-const Orders = require('./models/orders')
+const Orders = require('./models/orders');
+const Users = require('./models/users');
 
 // this module is a collection of all the route handlers
 // main purpose of api is to convert data from the express request object into the appropriate format for use with our data models
@@ -13,6 +14,7 @@ module.exports = autoCatch({
     deleteProduct,
     getProductById,
     listProducts,
+    createUser,
 });
 
 
@@ -82,6 +84,14 @@ async function listProducts(req, res) {
     res.json(products);
 }
 
+
+// USERS
+
+async function createUser(req, res, next) {
+    const user = await Users.create(req.body);
+    const { username, email } = user;
+    res.json({ username, email })
+}
 
 // IMAGEs 
 // this is an example function that is not implemented yet
