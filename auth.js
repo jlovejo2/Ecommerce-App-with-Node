@@ -21,7 +21,7 @@ const authenticate = passport.authenticate('local', { session: false })
 module.exports = {
     authenticate,
     login: autocatch(login), 
-    ensureAdmin: autocatch(ensureAdmin)
+    ensureUser: autocatch(ensureUser)
 }
 
 async function login (req, res, next) {
@@ -47,14 +47,19 @@ async function verify ( jwtString = '' ) {
     }
 }
 
-async function ensureAdmin(req, res ,next) {
+async function ensureUser(req, res ,next) {
     const jwtString = req.headers.authorization || req.cookies.jwt;
     const payload = await verify(jwtString);
-    if (payload.username === 'admin') return next();
 
-    const err = new Error('tsk tsk.  You are Unauthorized to perform this action')
-    err.statusCode = 401;
-    next(err);
+    if (payload.username) {
+        req.user = payload;
+        if (payload.username === 'admin') req.isAdmin = true;
+        return next();
+    } else {
+        const err = new Error('tsk tsk.  You are Unauthorized to perform this action')
+        err.statusCode = 401;
+        next(err);
+    }
 }
 
 function adminStrategy() {

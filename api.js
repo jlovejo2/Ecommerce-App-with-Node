@@ -17,23 +17,37 @@ module.exports = autoCatch({
     createUser,
 });
 
+function forbidden (next) {
+    const err = new Error('Forbidden')
+    err.statusCode = 403;
+    return next(err)
+}
+
 
 // ORDERS
 
 async function createOrder(req, res, next) {
-    const order = await Orders.create(req.body)
+    const fields = req.body;
+
+    if (!req.isAdmin) fields.username = req.user.username;
+
+    const order = await Orders.create(fields)
     res.json(order)
 }
 
 async function listOrders(req, res, next) {
     const {offset = 0, limit = 25, productID, status} = req.query
 
-    const orders = await Orders.list({
+    const opts = {
         offset: Number(offset),
         limit: Number(limit),
         productID,
         status
-    })
+    };
+
+    if (!req.isAdmin) opts.username = req.user.username;
+
+    const orders = await Orders.list(opts)
 
     res.json(orders);
 }
@@ -43,18 +57,24 @@ async function listOrders(req, res, next) {
 // PRODUCTS
 
 async function createProduct( req, res, next) {
+    if (!req.isAdmin) return forbidden(next);
+
     console.log('create Product: ', req.body);
     const product = await Products.create(req.body);
     res.json(product)
 }
 
 async function deleteProduct(req, res , next) {
+    if (!req.isAdmin) return forbidden(next);
+
     console.log('delete Product: ', req.body);
     await Products.remove(req.params.id)
     res.json({ success: true})
 }
 
 async function editProduct(req, res, next) {
+    if (!req.isAdmin) return forbidden(next);
+
     console.log('edit Product: ', req.body)
     const product = await Products.edit(req.params.id, req.body);
     res.json(product)
